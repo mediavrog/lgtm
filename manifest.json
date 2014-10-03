@@ -1,0 +1,36 @@
+{
+  "name": "LGTM reloaded",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Use a keyboard shortcut to LGTM in seconds. Icon by http://www.iconarchive.com/show/100-flat-2-icons-by-graphicloads.html",
+  "homepage_url": "http://mediavrog.net/blog/project/lgtm/",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "scripts": [
+      "/src/background.js"
+    ],
+    "persistent": true
+  },
+  "page_action": {
+    "default_icon": "icons/icon19.png",
+    "default_title": "Looks good to me!"
+  },
+  "commands": {
+    "lgtm": {
+      "suggested_key": {
+        "default": "Alt+L"
+      },
+      "description": "LGTM this pullrequest"
+    }
+  },
+  "permissions": [
+    "http://www.lgtm.in/g",
+    "https://github.com/",
+    "declarativeContent",
+    "activeTab"
+  ]
+}
