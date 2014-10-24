@@ -1,14 +1,3 @@
-//var settings = new Store("settings", {
-//     "sample_setting": "This is how you use Store.js to remember values"
-//});
-
-//example of using a message handler from the inject scripts
-chrome.extension.onMessage.addListener(
-    function (request, sender, sendResponse) {
-      chrome.pageAction.show(sender.tab.id);
-      sendResponse();
-    });
-
 // When the extension is installed or upgraded ...
 chrome.runtime.onInstalled.addListener(function () {
   // Replace all rules ...
@@ -16,7 +5,6 @@ chrome.runtime.onInstalled.addListener(function () {
     // With a new rule ...
     chrome.declarativeContent.onPageChanged.addRules([
       {
-        // That fires when a page's URL contains a 'g' ...
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
             pageUrl: {hostContains: 'github.', pathContains: 'pull'}
@@ -34,11 +22,23 @@ chrome.pageAction.onClicked.addListener(function (event) {
   lgtm();
 });
 
-chrome.commands.onCommand.addListener(function(command) {
+chrome.commands.onCommand.addListener(function (command) {
   //console.log('Command:', command);
   lgtm();
 });
 
 function lgtm() {
-  chrome.tabs.executeScript(null, {file: "/src/lgtm.js"});
+  chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", "http://www.lgtm.in/g", true);
+    xhr.setRequestHeader('Accept', 'application/json');
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState == 4) {
+        var data = JSON.parse(xhr.responseText);
+        //console.log("Received data: ", data);
+        chrome.tabs.sendMessage(tabs[0].id, {"type": "lgtm", "data": data});
+      }
+    };
+    xhr.send();
+  });
 }

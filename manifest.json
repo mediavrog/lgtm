@@ -1,8 +1,9 @@
 {
   "name": "LGTM reloaded",
-  "version": "1.0.0",
+  "short_name": "LGTM!",
+  "version": "1.0.2",
   "manifest_version": 2,
-  "description": "Use a keyboard shortcut to LGTM in seconds. Icon by http://www.iconarchive.com/show/100-flat-2-icons-by-graphicloads.html",
+  "description": "Use a keyboard shortcut to LGTM pull requests in seconds.",
   "homepage_url": "http://mediavrog.net/blog/project/lgtm/",
   "icons": {
     "16": "icons/icon16.png",
@@ -27,10 +28,15 @@
       "description": "LGTM this pullrequest"
     }
   },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/*/pull*"],
+      "js": ["src/lgtm.js"]
+    }
+  ],
   "permissions": [
     "http://www.lgtm.in/g",
     "https://github.com/",
-    "declarativeContent",
-    "activeTab"
+    "declarativeContent"
   ]
 }
