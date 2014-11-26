@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener(function () {
       {
         conditions: [
           new chrome.declarativeContent.PageStateMatcher({
-            pageUrl: {hostContains: 'github.', pathContains: 'pull'}
+            pageUrl: {hostContains: 'github.com'}
           })
         ],
         // And shows the extension's page action.
@@ -24,10 +24,10 @@ chrome.pageAction.onClicked.addListener(function (event) {
 
 chrome.commands.onCommand.addListener(function (command) {
   //console.log('Command:', command);
-  lgtm();
+  lgtm(command);
 });
 
-function lgtm() {
+function lgtm(command) {
   chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
     var xhr = new XMLHttpRequest();
     xhr.open("GET", "http://www.lgtm.in/g", true);
@@ -36,7 +36,7 @@ function lgtm() {
       if (xhr.readyState == 4) {
         var data = JSON.parse(xhr.responseText);
         //console.log("Received data: ", data);
-        chrome.tabs.sendMessage(tabs[0].id, {"type": "lgtm", "data": data});
+        chrome.tabs.sendMessage(tabs[0].id, {"type": command ? command : "lgtm", "data": data});
       }
     };
     xhr.send();

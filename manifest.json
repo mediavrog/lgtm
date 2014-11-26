@@ -1,9 +1,9 @@
 {
   "name": "LGTM reloaded",
   "short_name": "LGTM!",
-  "version": "1.0.2",
+  "version": "1.1",
   "manifest_version": 2,
-  "description": "Use a keyboard shortcut to LGTM pull requests in seconds.",
+  "description": "Use a keyboard shortcut to LGTM! pull requests in seconds.",
   "homepage_url": "http://mediavrog.net/blog/project/lgtm/",
   "icons": {
     "16": "icons/icon16.png",
@@ -25,12 +25,18 @@
       "suggested_key": {
         "default": "Alt+L"
       },
-      "description": "LGTM this pullrequest"
+      "description": "LGTM! this pull request"
+    },
+    "lgtm_no_submit": {
+      "suggested_key": {
+        "default": "Alt+Shift+L"
+      },
+      "description": "LGTM! this pull request (without comment auto-submit)"
     }
   },
   "content_scripts": [
     {
-      "matches": ["https://github.com/*/pull*"],
+      "matches": ["https://github.com/*"],
       "js": ["src/lgtm.js"]
     }
   ],
