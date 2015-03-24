@@ -13,7 +13,7 @@ chrome.runtime.onMessage.addListener(
             console.log('LGTMed! ', message.data['imageUrl']);
             var submitButtonWrap = document.getElementById("partial-new-comment-form-actions");
             if (submitButtonWrap) {
-              var submitButtonCandidates = submitButtonWrap.getElementsByClassName("primary");
+              var submitButtonCandidates = submitButtonWrap.getElementsByClassName("btn-primary");
               if (submitButtonCandidates.length > 0) submitButtonCandidates[0].click()
             }
           }
