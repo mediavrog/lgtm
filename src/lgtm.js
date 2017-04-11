@@ -50,7 +50,7 @@ function submitAsReview(message) {
         if (!expandedAttr || expandedAttr.nodeValue == 'false') reviewToggle.click();
 
         // select the 'approve' state
-        var approve = document.querySelector("#submit-review[aria-expanded=true] input[value=approve]");
+        var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
         if (approve) approve.click();
 
         // set lgtm
@@ -58,7 +58,7 @@ function submitAsReview(message) {
         handleMessage(input, message);
 
         if (message.type != lgtmNoSubmitType) {
-            var submitBtn = document.querySelector("#submit-review[aria-expanded=true] [type=submit]");
+            var submitBtn = document.querySelector(".form-actions button[type=submit]");
             if (submitBtn) {
                 submitBtn.click();
                 return true;
