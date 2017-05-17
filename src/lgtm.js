@@ -4,7 +4,7 @@ var lgtmNoSubmitType = "lgtm_no_submit";
 
 chrome.runtime.onMessage.addListener(
     function (message, sender, sendResponse) {
-        // console.log(message);
+        console.log(message);
         if (message) {
             if (message.lgtm) message.lgtm['summary'] = "LGTM!\n" + message.lgtm['markdown'];
             // message.type = lgtmNoSubmitType; // debug
@@ -23,9 +23,7 @@ chrome.runtime.onMessage.addListener(
 function submitAsComment(message) {
     var input = document.getElementById("new_comment_field");
     if (input) {
-        handleMessage(input, message);
-
-        if (message.type != lgtmNoSubmitType) {
+        if (handleMessage(input, message) && message.type !== lgtmNoSubmitType) {
             var submitBtn = document.querySelector("#partial-new-comment-form-actions .btn-primary");
             if (submitBtn) {
                 submitBtn.click();
@@ -47,7 +45,7 @@ function submitAsReview(message) {
     if (reviewToggle) {
         // need to open the review
         var expandedAttr = reviewToggle.attributes.getNamedItem('aria-expanded');
-        if (!expandedAttr || expandedAttr.nodeValue == 'false') reviewToggle.click();
+        if (!expandedAttr || expandedAttr.nodeValue === 'false') reviewToggle.click();
 
         // select the 'approve' state
         var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
@@ -55,9 +53,8 @@ function submitAsReview(message) {
 
         // set lgtm
         var input = document.getElementById("pull_request_review_body");
-        handleMessage(input, message);
 
-        if (message.type != lgtmNoSubmitType) {
+        if (handleMessage(input, message) && message.type !== lgtmNoSubmitType) {
             var submitBtn = document.querySelector(".form-actions button[type=submit]");
             if (submitBtn) {
                 submitBtn.click();
@@ -70,12 +67,15 @@ function submitAsReview(message) {
 }
 
 function handleMessage(input, message) {
+    console.log(message.lgtm);
     if (message.lgtm && message.lgtm['summary']) {
         setLoading(input, false);
-        input.value += message.lgtm['summary']
+        input.value += message.lgtm['summary'];
+        return true;
     } else {
         setLoading(input, true);
         loadLgtm(message.type);
+        return false;
     }
 }
 
