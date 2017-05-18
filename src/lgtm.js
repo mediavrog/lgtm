@@ -28,7 +28,7 @@ function submitAsComment(message) {
     if (input) {
         var injectedLgtm = handleMessage(input, message);
 
-        if (injectedLgtm && message.type != lgtmNoSubmitType) {
+        if (injectedLgtm && message.type !== lgtmNoSubmitType) {
             var submitBtn = document.querySelector("#partial-new-comment-form-actions .btn-primary");
             if (submitBtn) {
                 submitBtn.click();
@@ -50,18 +50,18 @@ function submitAsReview(message) {
     if (reviewToggle) {
         // need to open the review
         var expandedAttr = reviewToggle.attributes.getNamedItem('aria-expanded');
-        if (!expandedAttr || expandedAttr.nodeValue == 'false') reviewToggle.click();
+        if (!expandedAttr || expandedAttr.nodeValue === 'false') reviewToggle.click();
 
         // select the 'approve' state
-        var approve = document.querySelector("#submit-review[aria-expanded=true] input[value=approve]");
+        var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
         if (approve) approve.click();
 
         // set lgtm
         var input = document.getElementById("pull_request_review_body");
         var injectedLgtm = handleMessage(input, message);
 
-        if (injectedLgtm && message.type != lgtmNoSubmitType) {
-            var submitBtn = document.querySelector("#submit-review[aria-expanded=true] [type=submit]");
+        if (injectedLgtm && message.type !== lgtmNoSubmitType) {
+            var submitBtn = document.querySelector(".form-actions button[type=submit]");
             if (submitBtn) {
                 submitBtn.click();
                 return true;
