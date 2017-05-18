@@ -58,7 +58,7 @@ function loadLgtm(callback) {
             var lgtm = {};
             try {
                 lgtm = JSON.parse(xhr.responseText);
-                //console.log("Received lgtm: ", lgtm);
+                console.log("Received lgtm: ", lgtm);
             } catch (e) {
                 console.warn(e);
             }

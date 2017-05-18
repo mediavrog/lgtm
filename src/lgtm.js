@@ -1,12 +1,15 @@
 // LGTM
-var lgtmLoadingPlaceholder = "# Loading LGTM.. #";
+var lgtmLoadingPlaceholder = "<Loading LGTM..>";
 var lgtmNoSubmitType = "lgtm_no_submit";
 
 chrome.runtime.onMessage.addListener(
     function (message, sender, sendResponse) {
         // console.log(message);
         if (message) {
-            if (message.lgtm) message.lgtm['summary'] = "LGTM!\n" + message.lgtm['markdown'];
+            if (message.lgtm) {
+                var markdown = message.lgtm['markdown'] ? message.lgtm['markdown'].replace(message.lgtm['imageUrl'], message.lgtm['actualImageUrl']) : '';
+                message.lgtm['summary'] = "\nLGTM!\n" + markdown;
+            }
             // message.type = lgtmNoSubmitType; // debug
 
             var wasSubmitted = submitAsComment(message) || submitAsReview(message);
@@ -23,9 +26,9 @@ chrome.runtime.onMessage.addListener(
 function submitAsComment(message) {
     var input = document.getElementById("new_comment_field");
     if (input) {
-        handleMessage(input, message);
+        var injectedLgtm = handleMessage(input, message);
 
-        if (message.type != lgtmNoSubmitType) {
+        if (injectedLgtm && message.type != lgtmNoSubmitType) {
             var submitBtn = document.querySelector("#partial-new-comment-form-actions .btn-primary");
             if (submitBtn) {
                 submitBtn.click();
@@ -55,9 +58,9 @@ function submitAsReview(message) {
 
         // set lgtm
         var input = document.getElementById("pull_request_review_body");
-        handleMessage(input, message);
+        var injectedLgtm = handleMessage(input, message);
 
-        if (message.type != lgtmNoSubmitType) {
+        if (injectedLgtm && message.type != lgtmNoSubmitType) {
             var submitBtn = document.querySelector("#submit-review[aria-expanded=true] [type=submit]");
             if (submitBtn) {
                 submitBtn.click();
@@ -72,18 +75,25 @@ function submitAsReview(message) {
 function handleMessage(input, message) {
     if (message.lgtm && message.lgtm['summary']) {
         setLoading(input, false);
-        input.value += message.lgtm['summary']
+        input.value += message.lgtm['summary'];
+        return true;
     } else {
         setLoading(input, true);
         loadLgtm(message.type);
+        return false;
     }
 }
 
 function setLoading(input, isLoading) {
-    var ph = lgtmLoadingPlaceholder;
+    clearLgtmText(input);
+    if (isLoading) input.value += lgtmLoadingPlaceholder;
+}
 
-    input.value = input.value.replace(new RegExp(ph, 'g'), '');
-    if (isLoading) input.value += ph;
+function clearLgtmText(input) {
+    input.value = input.value
+        .replace(/\sLGTM!\s(\[!\[LGTM\][^\]]*\]).*\s*(\[:(\+|\-)1:\].*\))*\s*/, '')
+        .replace(new RegExp(lgtmLoadingPlaceholder, 'g'), '')
+    ;
 }
 
 function loadLgtm(type) {
