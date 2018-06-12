@@ -46,12 +46,8 @@ function submitAsComment(message) {
  * @returns {boolean} If the form was actually submitted after entering the LGTM.
  */
 function submitAsReview(message) {
-    var reviewToggle = document.querySelector(".js-reviews-container > button.js-menu-target");
-    if (reviewToggle) {
-        // need to open the review
-        var expandedAttr = reviewToggle.attributes.getNamedItem('aria-expanded');
-        if (!expandedAttr || expandedAttr.nodeValue === 'false') reviewToggle.click();
-
+    var reviewArea = document.querySelector("#submit-review");
+    if (reviewArea) {
         // select the 'approve' state
         var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
         if (approve) approve.click();
@@ -60,6 +56,7 @@ function submitAsReview(message) {
         var input = document.getElementById("pull_request_review_body");
         var injectedLgtm = handleMessage(input, message);
 
+        // click 'Submit review' button
         if (injectedLgtm && message.type !== lgtmNoSubmitType) {
             var submitBtn = document.querySelector(".form-actions button[type=submit]");
             if (submitBtn) {
@@ -97,5 +94,5 @@ function clearLgtmText(input) {
 }
 
 function loadLgtm(type) {
-    chrome.runtime.sendMessage({action: 'loadLgtm', type: type});
+    chrome.runtime.sendMessage({ action: 'loadLgtm', type: type });
 }
