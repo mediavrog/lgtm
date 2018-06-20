@@ -29,7 +29,7 @@ chrome.commands.onCommand.addListener(function (command) {
 
 chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     // console.log("message received", message);
-    if (message.action == 'loadLgtm') {
+    if (message.action === 'loadLgtm') {
         loadLgtm(function (lgtmResponse) {
             var payload = {action: 'initiate', type: message.type, lgtm: lgtmResponse};
             sendMessage(payload);
@@ -39,7 +39,7 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 
 function lgtm(command) {
     var payload = {action: 'initiate', type: command ? command : 'lgtm'};
-    // console.log('sending', payload);
+     console.log('sending', payload);
     sendMessage(payload);
 }
 
@@ -54,7 +54,7 @@ function loadLgtm(callback) {
     xhr.open("GET", "http://www.lgtm.in/g?PageSpeed=noscript", true);
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.onreadystatechange = function () {
-        if (xhr.readyState == 4 && callback) {
+        if (xhr.readyState === 4 && callback) {
             var lgtm = {};
             try {
                 lgtm = JSON.parse(xhr.responseText);

@@ -46,27 +46,29 @@ function submitAsComment(message) {
  * @returns {boolean} If the form was actually submitted after entering the LGTM.
  */
 function submitAsReview(message) {
-    var reviewArea = document.querySelector("#submit-review");
-    if (reviewArea) {
-        // select the 'approve' state
-        var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
-        if (approve) approve.click();
+  var reviewToggle = document.querySelector(".js-reviews-details");
 
-        // set lgtm
-        var input = document.getElementById("pull_request_review_body");
-        var injectedLgtm = handleMessage(input, message);
+  if (reviewToggle) {
+      reviewToggle.open = true;
+      // select the 'approve' state
+      var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
+      if (approve) approve.click();
 
-        // click 'Submit review' button
-        if (injectedLgtm && message.type !== lgtmNoSubmitType) {
-            var submitBtn = document.querySelector(".form-actions button[type=submit]");
-            if (submitBtn) {
-                submitBtn.click();
-                return true;
-            }
-        }
-    }
+      // set lgtm
+      var input = document.getElementById("pull_request_review_body");
+      var injectedLgtm = handleMessage(input, message);
 
-    return false;
+      // click 'Submit review' button
+      if (injectedLgtm && message.type !== lgtmNoSubmitType) {
+          var submitBtn = document.querySelector(".form-actions button[type=submit]");
+          if (submitBtn) {
+              submitBtn.click();
+              return true;
+          }
+      }
+  }
+
+  return false;
 }
 
 function handleMessage(input, message) {
