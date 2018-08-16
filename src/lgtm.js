@@ -46,9 +46,10 @@ function submitAsComment(message) {
  * @returns {boolean} If the form was actually submitted after entering the LGTM.
  */
 function submitAsReview(message) {
-  var reviewToggle = document.querySelector(".js-reviews-details");
+  var reviewToggle = document.querySelector(".js-reviews-toggle");
 
   if (reviewToggle) {
+      reviewToggle.click();
       reviewToggle.open = true;
       // select the 'approve' state
       var approve = document.querySelector('input[name="pull_request_review[event]"][value="approve"]');
