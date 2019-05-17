@@ -8,7 +8,9 @@ chrome.runtime.onMessage.addListener(
         if (message) {
             if (message.lgtm) {
                 var markdown = message.lgtm['markdown'] ? message.lgtm['markdown'].replace(message.lgtm['imageUrl'], message.lgtm['actualImageUrl']) : '';
-                message.lgtm['summary'] = "\nLGTM!\n" + markdown;
+                message.lgtm['summary'] = "\nLGTM!\n" +
+                    markdown +
+                    ". Powered By [LGTM reloaded](https://chrome.google.com/webstore/detail/lgtm-reloaded/hefidgcceobmmaiekccmbjpdcmbjklej).";
             }
             // message.type = lgtmNoSubmitType; // debug
 
