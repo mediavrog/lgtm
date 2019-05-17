@@ -61,7 +61,7 @@ function submitAsReview(message) {
 
       // click 'Submit review' button
       if (injectedLgtm && message.type !== lgtmNoSubmitType) {
-          var submitBtn = document.querySelector(".form-actions button[type=submit]");
+          var submitBtn = document.querySelector(".pull-request-review-menu .form-actions button[type=submit]");
           if (submitBtn) {
               submitBtn.click();
               return true;
