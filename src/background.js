@@ -51,7 +51,7 @@ function sendMessage(payload) {
 
 function loadLgtm(callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://www.lgtm.in/g?PageSpeed=noscript", true);
+    xhr.open("GET", "https://us-central1-lgtm-reloaded.cloudfunctions.net/lgtm");
     xhr.setRequestHeader('Accept', 'application/json');
     xhr.onreadystatechange = function () {
         if (xhr.readyState === 4 && callback) {
