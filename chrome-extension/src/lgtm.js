@@ -31,7 +31,7 @@ function submitAsComment(message) {
         var injectedLgtm = handleMessage(input, message);
 
         if (injectedLgtm && message.type !== lgtmNoSubmitType) {
-            var submitBtn = document.querySelector("#partial-new-comment-form-actions .btn-primary");
+            var submitBtn = document.querySelector("#issuecomment-new .btn-primary");
             if (submitBtn) {
                 submitBtn.click();
                 return true;
@@ -63,7 +63,7 @@ function submitAsReview(message) {
 
       // click 'Submit review' button
       if (injectedLgtm && message.type !== lgtmNoSubmitType) {
-          var submitBtn = document.querySelector(".pull-request-review-menu .form-actions button[type=submit]");
+          var submitBtn = document.querySelector("#review-changes-modal .form-actions button[type=submit]");
           if (submitBtn) {
               submitBtn.click();
               return true;
