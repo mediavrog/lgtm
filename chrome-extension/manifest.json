@@ -1,7 +1,7 @@
 {
   "name": "LGTM reloaded",
   "short_name": "LGTM!",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "manifest_version": 2,
   "description": "Use a keyboard shortcut to LGTM! pull requests in seconds.",
   "homepage_url": "http://www.mediavrog.net/projects/lgtm/",
