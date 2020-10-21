@@ -6,7 +6,7 @@ const GIPHY_ENDPOINT = "https://api.giphy.com/v1/gifs/random";
 
 exports.lgtm = functions.https.onRequest((request, response) => {
     return new Promise((resolve, reject) => {
-        https.get(`${GIPHY_ENDPOINT}?api_key=${GIPHY_KEY}&tag=thumbs-up`, res => {
+        https.get(`${GIPHY_ENDPOINT}?api_key=${GIPHY_KEY}&tag=thumbs-up&rating=g`, res => {
             res.setEncoding("utf8");
             let body = "";
             res.on("data", data => body += data);
