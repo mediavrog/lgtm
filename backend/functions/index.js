@@ -13,8 +13,8 @@ exports.lgtm = functions.https.onRequest((request, response) => {
             res.on("end", () => {
                 body = JSON.parse(body);
                 let lgtmData = body.data;
-                let imageUrl = lgtmData.image_url;
-                let smallImageUrl = lgtmData.fixed_height_downsampled_url;
+                let imageUrl = (lgtmData.images.original || {}).url;
+                let smallImageUrl = (lgtmData.images.fixed_height_downsampled || {}).url;
                 let lgtm = {
                     "markdown": `[![LGTM](${smallImageUrl})](${lgtmData.url})\nPowered By GIPHY`,
                     "imageUrl": smallImageUrl,
