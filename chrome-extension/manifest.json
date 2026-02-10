@@ -1,8 +1,8 @@
 {
   "name": "LGTM reloaded",
   "short_name": "LGTM!",
-  "version": "1.4.2",
-  "manifest_version": 2,
+  "version": "1.5.0",
+  "manifest_version": 3,
   "description": "Use a keyboard shortcut to LGTM! pull requests in seconds.",
   "homepage_url": "http://www.mediavrog.net/projects/lgtm/",
   "icons": {
@@ -11,12 +11,9 @@
     "128": "icons/icon128.png"
   },
   "background": {
-    "scripts": [
-      "/src/background.js"
-    ],
-    "persistent": true
+    "service_worker": "/src/background.js"
   },
-  "page_action": {
+  "action": {
     "default_icon": "icons/icon19.png",
     "default_title": "Looks good to me!"
   },
@@ -41,8 +38,10 @@
     }
   ],
   "permissions": [
-    "https://us-central1-lgtm-reloaded.cloudfunctions.net/lgtm",
-    "https://github.com/",
     "declarativeContent"
+  ],
+  "host_permissions": [
+    "https://us-central1-lgtm-reloaded.cloudfunctions.net/lgtm",
+    "https://github.com/"
   ]
 }

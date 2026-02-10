@@ -1,7 +1,7 @@
 // When the extension is installed or upgraded ...
-chrome.runtime.onInstalled.addListener(function () {
+chrome.runtime.onInstalled.addListener(() => {
     // Replace all rules ...
-    chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+    chrome.declarativeContent.onPageChanged.removeRules(undefined, () => {
         // With a new rule ...
         chrome.declarativeContent.onPageChanged.addRules([
             {
@@ -11,27 +11,27 @@ chrome.runtime.onInstalled.addListener(function () {
                     })
                 ],
                 // And shows the extension's page action.
-                actions: [new chrome.declarativeContent.ShowPageAction()]
+                actions: [new chrome.declarativeContent.ShowAction()]
             }
         ]);
     });
 });
 
-chrome.pageAction.onClicked.addListener(function (event) {
+chrome.action.onClicked.addListener(() => {
     //console.log("Page action:", event);
     lgtm();
 });
 
-chrome.commands.onCommand.addListener(function (command) {
+chrome.commands.onCommand.addListener((command) => {
     //console.log('Command:', command);
     lgtm(command);
 });
 
-chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
+chrome.runtime.onMessage.addListener((message) => {
     // console.log("message received", message);
     if (message.action === 'loadLgtm') {
         loadLgtm(function (lgtmResponse) {
-            var payload = {action: 'initiate', type: message.type, lgtm: lgtmResponse};
+            var payload = {action: 'initiate', type: message.type, lgtm: lgtmResponse || {}};
             sendMessage(payload);
         })
     }
@@ -50,21 +50,14 @@ function sendMessage(payload) {
 }
 
 function loadLgtm(callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "https://us-central1-lgtm-reloaded.cloudfunctions.net/lgtm");
-    xhr.setRequestHeader('Accept', 'application/json');
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4 && callback) {
-            var lgtm = {};
-            try {
-                lgtm = JSON.parse(xhr.responseText);
-                console.log("Received lgtm: ", lgtm);
-            } catch (e) {
-                console.warn(e);
-            }
-
-            callback(lgtm);
-        }
-    };
-    xhr.send();
+    fetch("https://us-central1-lgtm-reloaded.cloudfunctions.net/lgtm", { headers: { Accept: "application/json" } })
+      .then((r) => r.json())
+      .then((lgtm) => {
+         console.log("Received lgtm: ", lgtm);
+         if (callback) callback(lgtm);
+      })
+      .catch((e) => {
+        console.warn(e);
+        callback(null);
+      })
 }
